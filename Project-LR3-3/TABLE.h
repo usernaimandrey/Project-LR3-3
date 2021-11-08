@@ -5,4 +5,5 @@ using namespace System::Windows::Forms;
 
 float function(float);
 void buildTable(float, float, float, float&, ListBox^);
-
+bool GetFloat(float&, TextBox^, String^);
+void OutPut(float, TextBox^);

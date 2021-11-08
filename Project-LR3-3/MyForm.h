@@ -199,11 +199,11 @@ namespace ProjectLR33 {
 			// 
 			// outMax
 			// 
-			this->outMax->Enabled = false;
 			this->outMax->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->outMax->Location = System::Drawing::Point(625, 351);
 			this->outMax->Name = L"outMax";
+			this->outMax->ReadOnly = true;
 			this->outMax->Size = System::Drawing::Size(198, 30);
 			this->outMax->TabIndex = 10;
 			this->outMax->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -237,7 +237,6 @@ namespace ProjectLR33 {
 			// 
 			// listBox1
 			// 
-			this->listBox1->Enabled = false;
 			this->listBox1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.2F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->listBox1->FormattingEnabled = true;
@@ -275,7 +274,7 @@ namespace ProjectLR33 {
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::CornflowerBlue;
-			this->ClientSize = System::Drawing::Size(1002, 581);
+			this->ClientSize = System::Drawing::Size(1002, 583);
 			this->Controls->Add(this->label7);
 			this->Controls->Add(this->label6);
 			this->Controls->Add(this->listBox1);
@@ -316,11 +315,12 @@ private: System::Void textBox1_TextChanged(System::Object^ sender, System::Event
 private: System::Void textBox3_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void BuildTable_Click(System::Object^ sender, System::EventArgs^ e) {
-	float start = Convert::ToSingle(txBegin->Text);
-	float end = Convert::ToSingle(txEnd->Text);
-	float step = Convert::ToSingle(txStep->Text);
-	float Ymax;
+	float start, end, step, Ymax;
+	if (!GetFloat(start, txBegin, "¬ведите начальное значение аргумента")) return;
+	if (!GetFloat(end, txEnd, "¬ведите начальное значение аргумента")) return;
+	if (!GetFloat(step, txStep, "¬ведите начальное значение аргумента")) return;
 	buildTable(start, end, step, Ymax, listBox1);
+	OutPut(Ymax, outMax);
 }
 };
 }
