@@ -53,6 +53,9 @@ namespace ProjectLR33 {
 	private: System::Windows::Forms::Button^ BuildTable;
 
 	private: System::Windows::Forms::Button^ closeButton;
+	private: System::Windows::Forms::ListBox^ listBox1;
+	private: System::Windows::Forms::Label^ label6;
+	private: System::Windows::Forms::Label^ label7;
 
 
 	private:
@@ -69,7 +72,6 @@ namespace ProjectLR33 {
 		void InitializeComponent(void)
 		{
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
-			System::Windows::Forms::ListBox^ listTable;
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
@@ -82,7 +84,9 @@ namespace ProjectLR33 {
 			this->outMax = (gcnew System::Windows::Forms::TextBox());
 			this->BuildTable = (gcnew System::Windows::Forms::Button());
 			this->closeButton = (gcnew System::Windows::Forms::Button());
-			listTable = (gcnew System::Windows::Forms::ListBox());
+			this->listBox1 = (gcnew System::Windows::Forms::ListBox());
+			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->label7 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -179,20 +183,6 @@ namespace ProjectLR33 {
 			this->txStep->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			this->txStep->TextChanged += gcnew System::EventHandler(this, &MyForm::textBox3_TextChanged);
 			// 
-			// listTable
-			// 
-			listTable->BackColor = System::Drawing::Color::White;
-			listTable->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			listTable->FormattingEnabled = true;
-			listTable->ItemHeight = 18;
-			listTable->Location = System::Drawing::Point(12, 236);
-			listTable->Name = L"listTable";
-			listTable->ScrollAlwaysVisible = true;
-			listTable->Size = System::Drawing::Size(393, 310);
-			listTable->TabIndex = 8;
-			listTable->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm::listBox1_SelectedIndexChanged);
-			// 
 			// label5
 			// 
 			this->label5->AutoSize = true;
@@ -230,6 +220,7 @@ namespace ProjectLR33 {
 			this->BuildTable->TabIndex = 11;
 			this->BuildTable->Text = L"Построить таблицу";
 			this->BuildTable->UseVisualStyleBackColor = false;
+			this->BuildTable->Click += gcnew System::EventHandler(this, &MyForm::BuildTable_Click);
 			// 
 			// closeButton
 			// 
@@ -244,17 +235,54 @@ namespace ProjectLR33 {
 			this->closeButton->UseVisualStyleBackColor = false;
 			this->closeButton->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
 			// 
+			// listBox1
+			// 
+			this->listBox1->Enabled = false;
+			this->listBox1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.2F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->listBox1->FormattingEnabled = true;
+			this->listBox1->ItemHeight = 20;
+			this->listBox1->Location = System::Drawing::Point(12, 251);
+			this->listBox1->Name = L"listBox1";
+			this->listBox1->ScrollAlwaysVisible = true;
+			this->listBox1->Size = System::Drawing::Size(393, 304);
+			this->listBox1->TabIndex = 13;
+			// 
+			// label6
+			// 
+			this->label6->AutoSize = true;
+			this->label6->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label6->Location = System::Drawing::Point(12, 224);
+			this->label6->Name = L"label6";
+			this->label6->Size = System::Drawing::Size(112, 25);
+			this->label6->TabIndex = 14;
+			this->label6->Text = L"Аргумент";
+			// 
+			// label7
+			// 
+			this->label7->AutoSize = true;
+			this->label7->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label7->Location = System::Drawing::Point(130, 224);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(102, 25);
+			this->label7->TabIndex = 15;
+			this->label7->Text = L"Функция";
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::CornflowerBlue;
 			this->ClientSize = System::Drawing::Size(1002, 581);
+			this->Controls->Add(this->label7);
+			this->Controls->Add(this->label6);
+			this->Controls->Add(this->listBox1);
 			this->Controls->Add(this->closeButton);
 			this->Controls->Add(this->BuildTable);
 			this->Controls->Add(this->outMax);
 			this->Controls->Add(this->label5);
-			this->Controls->Add(listTable);
 			this->Controls->Add(this->txStep);
 			this->Controls->Add(this->txEnd);
 			this->Controls->Add(this->txBegin);
@@ -286,6 +314,13 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void textBox3_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void BuildTable_Click(System::Object^ sender, System::EventArgs^ e) {
+	float start = Convert::ToSingle(txBegin->Text);
+	float end = Convert::ToSingle(txEnd->Text);
+	float step = Convert::ToSingle(txStep->Text);
+	float Ymax;
+	buildTable(start, end, step, Ymax, listBox1);
 }
 };
 }

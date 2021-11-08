@@ -1,14 +1,14 @@
-#include "MyForm.h"
-
 #include "stdafx.h"
-
-#include <Windows.h>
+#include "MyForm.h"
 
 using namespace ProjectLR33;
 
-int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
+[STAThread]
+int main(array<String^>^ arg) {
     Application::EnableVisualStyles();
     Application::SetCompatibleTextRenderingDefault(false);
-    Application::Run(gcnew MyForm);
+
+    ProjectLR33::MyForm form;
+    Application::Run(% form);
     return 0;
 }
