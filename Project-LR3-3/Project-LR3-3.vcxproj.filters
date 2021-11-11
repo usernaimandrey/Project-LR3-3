@@ -18,7 +18,7 @@
     <ClCompile Include="MyForm.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
-    <ClCompile Include="buildTable.cpp">
+    <ClCompile Include="BuildTable.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">

@@ -153,6 +153,7 @@ namespace ProjectLR33 {
 			// 
 			// txBegin
 			// 
+			this->txBegin->BackColor = System::Drawing::Color::White;
 			this->txBegin->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10.2F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->txBegin->Location = System::Drawing::Point(12, 179);
@@ -171,6 +172,7 @@ namespace ProjectLR33 {
 			this->txEnd->Size = System::Drawing::Size(100, 27);
 			this->txEnd->TabIndex = 6;
 			this->txEnd->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			this->txEnd->TextChanged += gcnew System::EventHandler(this, &MyForm::txEnd_TextChanged);
 			// 
 			// txStep
 			// 
@@ -241,7 +243,7 @@ namespace ProjectLR33 {
 				static_cast<System::Byte>(204)));
 			this->listBox1->FormattingEnabled = true;
 			this->listBox1->ItemHeight = 20;
-			this->listBox1->Location = System::Drawing::Point(12, 251);
+			this->listBox1->Location = System::Drawing::Point(12, 252);
 			this->listBox1->Name = L"listBox1";
 			this->listBox1->ScrollAlwaysVisible = true;
 			this->listBox1->Size = System::Drawing::Size(393, 304);
@@ -274,7 +276,7 @@ namespace ProjectLR33 {
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::CornflowerBlue;
-			this->ClientSize = System::Drawing::Size(1002, 583);
+			this->ClientSize = System::Drawing::Size(1002, 578);
 			this->Controls->Add(this->label7);
 			this->Controls->Add(this->label6);
 			this->Controls->Add(this->listBox1);
@@ -308,19 +310,73 @@ private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArg
 private: System::Void label5_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
-	this->Close();
+	System::Windows::Forms::DialogResult result;
+	result = MessageBox::Show("Завершить ?", "Сообщение", MessageBoxButtons::OKCancel, MessageBoxIcon::Question);
+	if (result == System::Windows::Forms::DialogResult::OK)
+	{
+		this->Close();
+	}
 }
 private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (this->txBegin->Text->Length == 0)
+	{
+		this->txBegin->BackColor = System::Drawing::Color::Red;
+	}
+	else
+	{
+		this->txBegin->BackColor = System::Drawing::Color::White;
+	}
 }
 private: System::Void textBox3_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (this->txStep->Text->Length == 0)
+	{
+		this->txStep->BackColor = System::Drawing::Color::Red;
+	}
+	else
+	{
+		this->txStep->BackColor = System::Drawing::Color::White;
+	}
 }
 private: System::Void BuildTable_Click(System::Object^ sender, System::EventArgs^ e) {
 	float start, end, step, Ymax;
-	if (!GetFloat(start, txBegin, "Введите начальное значение аргумента")) return;
-	if (!GetFloat(end, txEnd, "Введите начальное значение аргумента")) return;
-	if (!GetFloat(step, txStep, "Введите начальное значение аргумента")) return;
-	buildTable(start, end, step, Ymax, listBox1);
+	if (this->txBegin->Text->Length == 0 && this->txEnd->Text->Length == 0
+		&& this->txStep->Text->Length == 0)
+	{
+		this->txBegin->BackColor = System::Drawing::Color::Red;
+		this->txEnd->BackColor = System::Drawing::Color::Red;
+		this->txStep->BackColor = System::Drawing::Color::Red;
+		MessageBox::Show("Поля подсвеченные крассным обязательны к заполнению",
+			"Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		this->txBegin->Focus();
+		return;
+	}
+	if (!GetFloat(start, txBegin, "Введите начальное значение аргумента"))
+	{
+		this->txBegin->BackColor = System::Drawing::Color::Red;
+		return;
+	}
+	if (!GetFloat(end, txEnd, "Введите конечное значение аргумента"))
+	{
+		this->txEnd->BackColor = System::Drawing::Color::Red;
+		return;
+	}
+	if (!GetFloat(step, txStep, "Введите шаг таблицы"))
+	{
+		this->txStep->BackColor = System::Drawing::Color::Red;
+		return;
+	}
+	CreateTable(start, end, step, Ymax, listBox1);
 	OutPut(Ymax, outMax);
+}
+private: System::Void txEnd_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (this->txEnd->Text->Length == 0)
+	{
+		this->txEnd->BackColor = System::Drawing::Color::Red;
+	}
+	else
+	{
+		this->txEnd->BackColor = System::Drawing::Color::White;
+	}
 }
 };
 }
